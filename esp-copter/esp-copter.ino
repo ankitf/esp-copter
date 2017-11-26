@@ -1,18 +1,18 @@
 #include <Servo.h>
-
-
+  
 #define GPIO12  12
 #define GPIO3   3
 
+#define MOTOR1_PIN  GPIO12
+#define MOTOR2_PIN  GPIO3
 
 #define MIN_SIGNAL  1000
 #define MAX_SIGNAL  2000
 
-#define THROTTLE_DELAY  100
+#define MAX_THROTTLE    180
+#define MIN_THROTTLE    0
 
-
-#define MOTOR1_PIN  GPIO12
-#define MOTOR2_PIN  GPIO3
+#define THROTTLE_DELAY  100 // Increase thottle with 100 ms delay in steps
 
 Servo escMotor1;
 Servo escMotor2;
@@ -31,6 +31,12 @@ void l0_setThrottle(Servo escMotor_a, int throttle_a)
     
     int currentThrottle_ = l0_readThrottle(escMotor_a);
 
+    // Check for throtle bounds
+    if(throttle_a > MAX_THROTTLE)
+        throttle_a = MAX_THROTTLE;
+    if(throttle_a < MIN_THROTTLE)
+        throttle_a = MIN_THROTTLE;
+             
     // Check if we are goin up or down
     int step_ = 1;
     if(throttle_a < currentThrottle_)
@@ -56,7 +62,17 @@ void l0_initialiseMotors()
     delay(1000); 
 }
 
+void l1_flyUp(int throttle_a)
+{
+    int currentThrottleMotor1_ = l0_readThrottle(escMotor1);
+    int currentThrottleMotor2_ = l0_readThrottle(escMotor1);
 
+    while(currentThrottleMotor1_ != throttle_a)
+    {
+        l0_setThrottle(escMotor1, currentThrottleMotor1_++);
+        l0_setThrottle(escMotor2, currentThrottleMotor2_++);
+    }
+}
 
 void setup() {
   // put your setup code here, to run once:
