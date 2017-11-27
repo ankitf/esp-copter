@@ -1,6 +1,12 @@
+#define BLYNK_PRINT Serial
+
 
 #include <Servo.h>
-  
+//#include <ESP8266WiFi.h>
+#include <BlynkSimpleEsp8266.h>
+
+
+
 #define GPIO12  12
 #define GPIO3   3
 
@@ -13,11 +19,10 @@
 #define MAX_THROTTLE    180
 #define MIN_THROTTLE    0
 
-#define THROTTLE_DELAY  100 // Increase thottle with 100 ms delay in steps
-
+#define THROTTLE_DELAY  100     // Increase thottle with 100 ms delay in steps
+ 
 Servo escMotor1;
 Servo escMotor2;
-
 
 int l0_readThrottle(Servo escMotor_a)
 {
@@ -51,7 +56,7 @@ void l0_setThrottle(Servo escMotor_a, int throttle_a)
     }
 }
 
-void l0_initialiseMotors()
+void l0_initialiseMotors(void)
 {
     escMotor1.attach(GPIO12, MIN_SIGNAL, MAX_SIGNAL);
     escMotor2.attach(GPIO3, MIN_SIGNAL, MAX_SIGNAL);
@@ -80,16 +85,27 @@ void l1_flyUp(int throttle_a)
     }
 }
 
+
+
+// Your WiFi credentials.
+// Set password to "" for open networks.
+char ssid[] = "Z";
+char pass[] = "########";
+char auth[] = "63602e17cb7c46f38cbd64e3e751e322";
+
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(115200);
-  l1_initialiaseCopter();  
+    Serial.begin(9600);
+    l1_initialiaseCopter();  
+
+//    Blynk.begin(auth,ssid, pass);
+    Blynk.begin(auth, ssid, pass, "blynk-cloud.com", 8442);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
     
-    l0_setThrottle(escMotor1, 90);
+    Blynk.run();
 }
 
 
