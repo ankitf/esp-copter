@@ -1,3 +1,4 @@
+
 #include <Servo.h>
   
 #define GPIO12  12
@@ -62,6 +63,11 @@ void l0_initialiseMotors()
     delay(1000); 
 }
 
+void l1_initialiaseCopter(void)
+{
+    l0_initialiseMotors();
+}
+
 void l1_flyUp(int throttle_a)
 {
     int currentThrottleMotor1_ = l0_readThrottle(escMotor1);
@@ -77,7 +83,7 @@ void l1_flyUp(int throttle_a)
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
-  l0_initialiseMotors();  
+  l1_initialiaseCopter();  
 }
 
 void loop() {
