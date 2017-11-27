@@ -73,16 +73,30 @@ void l1_initialiaseCopter(void)
     l0_initialiseMotors();
 }
 
+void l1_stabiliseCopter(void)
+{
+    int currentThrottleMotor1_ = l0_readThrottle(escMotor1);
+
+    // Make sure both the motors are running at the same throttle 
+    l0_setThrottle(escMotor2, currentThrottleMotor1_);
+}
+
 void l1_flyUp(int throttle_a)
 {
     int currentThrottleMotor1_ = l0_readThrottle(escMotor1);
     int currentThrottleMotor2_ = l0_readThrottle(escMotor1);
 
-    while(currentThrottleMotor1_ != throttle_a)
+    // Stabilise before the lift
+    l1_stabiliseCopter();
+   
+    while(currentThrottleMotor1_ != throttle_a && currentThrottleMotor2_ != throttle_a)
     {
         l0_setThrottle(escMotor1, currentThrottleMotor1_++);
         l0_setThrottle(escMotor2, currentThrottleMotor2_++);
     }
+
+    // Stabilise after the lift
+    l1_stabiliseCopter();
 }
 
 
