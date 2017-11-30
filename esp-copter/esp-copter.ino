@@ -107,6 +107,13 @@ char ssid[] = "Z";
 char pass[] = "########";
 char auth[] = "63602e17cb7c46f38cbd64e3e751e322";
 
+
+BLYNK_WRITE(V0)
+{
+    int pinValueV0_ = param.asInt(); // assigning incoming value from pin V1 to a variable
+    Serial.println(pinValueV0_);
+}
+
 void setup() {
   // put your setup code here, to run once:
     Serial.begin(9600);
